@@ -106,3 +106,5 @@ dist
 #package.json cache file
 package-lock.json
 **/.DS_Store
+.env
+.env.*
