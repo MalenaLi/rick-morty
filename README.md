@@ -5,7 +5,9 @@ Rick and Morty Challenge for Chipax
 Pueden seguir esta URL para su instalación: https://nodejs.dev/
 
 2. Clonar repo:
+```
 git clone https://github.com/MalenaLi/rick-morty.git
+```
 
 3. Acceder al repo:
 ```
