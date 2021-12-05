@@ -208,12 +208,15 @@ async function main () {
     let json = JSON.stringify(finalList, null, 4);
     return json
 }
-module.exports = init;
-module.exports = returnVariable;
-module.exports = getPages;
-module.exports = getPromises;
-module.exports = getCounter;
-module.exports = charCounter;
-module.exports = getEpisodes;
-module.exports = episodeLocation;
-module.exports = main;
+const functions = {
+    init,
+    returnVariable,
+    getPages,
+    getPromises,
+    getCounter,
+    charCounter,
+    getEpisodes,
+    episodeLocation,
+    main
+}
+module.exports = functions

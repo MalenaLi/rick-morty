@@ -29,6 +29,11 @@ npm install
 npm start
 ```
 
+### Ejecutar test
+```
+npm test
+```
+
 # frontend
 
 ## Acceder al frontend
