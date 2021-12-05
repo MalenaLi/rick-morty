@@ -72,6 +72,7 @@ async function getPromises(resource) {
     })
     .catch (error => {
         console.log(error.response.data.error)
+        return;
     })
     return data
 }
@@ -154,15 +155,17 @@ async function getEpisodes () {
             characters.push(axios.get(characterUrl));
         })
         let resdata;
-        await Promise.all(characters).then((response) => {
-            resdata = response.map((r) => { return r.data });
-            resdata = resdata.map((d) => { return d.origin });
-            resdata = resdata.map((d) => { return d.name });
-            detail['locations'] = _.uniq(_.map(resdata));
-        })
-        .catch ((error) => {
-            console.log(error.response.data.error);
-        })
+        if (characters.length > 0) {
+            await Promise.all(characters).then((response) => {
+                resdata = response.map((r) => { return r.data });
+                resdata = resdata.map((d) => { return d.origin });
+                resdata = resdata.map((d) => { return d.name });
+                detail['locations'] = _.uniq(_.map(resdata));
+            })
+            .catch ((error) => {
+                console.log(error)
+            })
+        }
         listEpisodes.push(detail);
     }
     return listEpisodes;
@@ -196,19 +199,17 @@ async function episodeLocation () {
 /* Funcion incial que ejecuta los programas y
 /* devuelve y exporta el output en formato json.
 */
-async function main (req, res) {
+async function main () {
     await init();
     let finalList = [];
     finalList.push(await charCounter());
     finalList.push(await episodeLocation());
     let json = JSON.stringify(finalList, null, 4);
-    return res.send(json)
-    // try {
-    //     fs.writeFileSync('ouput.json', json)
-    //     console.log('Se generó un .json :)')
-    // } catch (error) {
-    //     console.log(error)
-    // }
+    return json
 }
 module.exports = getPages;
+module.exports = charCounter;
+module.exports = episodeLocation;
+module.exports = init;
 module.exports = main;
+main()
