@@ -1,6 +1,5 @@
 const _ = require('lodash'); 
 const axios = require('axios').default;
-const fs = require('fs');
 const { performance } = require('perf_hooks');
 const apiUrl = 'https://rickandmortyapi.com/api/'
 var characters
@@ -56,7 +55,6 @@ async function getPages(resource) {
 /* Consulta la API definida en el resource.
 */
 async function getPromises(resource) {
-    // Devuelve los 'results' de la data
     let pages = await getPages(resource);
     let promises = [];
     if (!pages || _.isUndefined(pages))
@@ -84,7 +82,6 @@ async function getPromises(resource) {
 /* la cantidad de apariciones del char.
 */
 async function getCounter (resource, char) {
-    // Devuelve el dict con la cuenta de caracteres
     let data = returnVariable(resource)
     if (!data || _.isUndefined(data))
         return;
@@ -111,7 +108,6 @@ async function getCounter (resource, char) {
 /* resultados devueltos por la funcion getCounter
 */
 async function charCounter () {
-    //Llama al contador por resource y define el tiempo
     start = performance.now();
     let charDict = {
         'exercise_name': 'Char Counter',
@@ -140,7 +136,6 @@ async function charCounter () {
 /* devolver la lista de origins.
 */
 async function getEpisodes () {
-    // Devuelve el dict con los origin(location) por episodio
     if (!episodes || _.isUndefined(episodes))
         return;
     if (!characters || _.isUndefined(characters)) {
@@ -180,7 +175,6 @@ async function getEpisodes () {
 /* resultados devueltos por la funcion getEpisodes()
 */
 async function episodeLocation () {
-    //Llama a los episodios y define el tiempo
     start = performance.now();
     let charDict = {
         'exercise_name': 'Episode Locations',
