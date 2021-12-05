@@ -71,7 +71,7 @@ async function getPromises(resource) {
         data = _.flatten(data)
     })
     .catch (error => {
-        console.log(error.response.data.error)
+        console.log(error)
         return;
     })
     return data
@@ -125,7 +125,7 @@ async function charCounter () {
     listResult.push(await getCounter('location', 'l'));
     executionTime = (performance.now() - start % 6000) / 1000;
     charDict['results'] = listResult;
-    charDict['time'] = executionTime;
+    charDict['time'] = `${executionTime} s`;
     if (executionTime < 3)
         charDict['in_time'] = true;
     return charDict;
@@ -143,6 +143,9 @@ async function getEpisodes () {
     // Devuelve el dict con los origin(location) por episodio
     if (!episodes || _.isUndefined(episodes))
         return;
+    if (!characters || _.isUndefined(characters)) {
+        return;
+    }
     let listEpisodes = []
     for (let d = 0; d < episodes.length; d++) {
         let detail = {
@@ -150,21 +153,19 @@ async function getEpisodes () {
             'episode': episodes[d].episode,
             'locations':[]
         }
-        let characters = [];
+        let characterIds = [];
         episodes[d].characters.forEach((characterUrl) => {
-            characters.push(axios.get(characterUrl));
+            let ids = characterUrl.split('/')
+            characterIds.push(ids[ids.length - 1])
         })
         let resdata;
-        if (characters.length > 0) {
-            await Promise.all(characters).then((response) => {
-                resdata = response.map((r) => { return r.data });
-                resdata = resdata.map((d) => { return d.origin });
-                resdata = resdata.map((d) => { return d.name });
-                detail['locations'] = _.uniq(_.map(resdata));
+        if (characterIds.length > 0) {
+            let charactersEpisode = characters.filter((c) => {
+                return characterIds.includes(c.id.toString())
             })
-            .catch ((error) => {
-                console.log(error)
-            })
+            charactersEpisode = charactersEpisode.map((d) => { return d.origin })
+            charactersEpisode = charactersEpisode.map((d) => { return d.name });
+            detail['locations'] = _.uniq(_.map(charactersEpisode));
         }
         listEpisodes.push(detail);
     }
@@ -189,7 +190,7 @@ async function episodeLocation () {
     }
     charDict['results'] = await getEpisodes();
     executionTime = (performance.now() - start % 6000) / 1000;
-    charDict['time'] = executionTime;
+    charDict['time'] = `${executionTime} s`;
     if (executionTime < 3)
         charDict['in_time'] = true;
     return charDict;
@@ -207,9 +208,12 @@ async function main () {
     let json = JSON.stringify(finalList, null, 4);
     return json
 }
-module.exports = getPages;
-module.exports = charCounter;
-module.exports = episodeLocation;
 module.exports = init;
+module.exports = returnVariable;
+module.exports = getPages;
+module.exports = getPromises;
+module.exports = getCounter;
+module.exports = charCounter;
+module.exports = getEpisodes;
+module.exports = episodeLocation;
 module.exports = main;
-main()
