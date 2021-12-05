@@ -123,7 +123,7 @@ async function charCounter () {
     listResult.push(await getCounter('character', 'c'));
     listResult.push(await getCounter('episode', 'e'));
     listResult.push(await getCounter('location', 'l'));
-    executionTime = (performance.now() - start % 60000) / 1000;
+    executionTime = ((performance.now() - start) % 60000) / 1000;
     charDict['results'] = listResult;
     charDict['time'] = `${executionTime} s`;
     if (executionTime < 3)
@@ -189,7 +189,7 @@ async function episodeLocation () {
         'results': []
     }
     charDict['results'] = await getEpisodes();
-    executionTime = (performance.now() - start % 60000) / 1000;
+    executionTime = ((performance.now() - start) % 60000) / 1000;
     charDict['time'] = `${executionTime} s`;
     if (executionTime < 3)
         charDict['in_time'] = true;
